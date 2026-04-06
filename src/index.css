@@ -1,0 +1,160 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #6D28D9;
+  --color-primary-light: #F5F3FF;
+  --color-primary-dark: #4C1D95;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-sidebar: #ffffff;
+  --color-border: #e2e8f0;
+
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-serif: "Playfair Display", Georgia, serif;
+
+  --radius-xl: 1rem;
+  --radius-lg: 0.75rem;
+  --radius-md: 0.5rem;
+}
+
+:root {
+  --background: #f8fafc;
+  --foreground: #1e293b;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+}
+
+/* Updated UI Components based on Vimukti Branding & Screenshots */
+
+.ag-card {
+  @apply bg-white rounded-xl border border-gray-100 shadow-sm transition-all hover:shadow-md;
+}
+
+.ag-button {
+  @apply bg-primary text-white px-6 py-2.5 rounded-lg font-semibold transition-all hover:bg-primary-dark active:scale-[0.98] disabled:opacity-50;
+}
+
+.ag-button-outline {
+  @apply bg-white text-primary px-6 py-2.5 rounded-lg font-semibold border border-primary transition-all hover:bg-primary/5 active:scale-[0.98];
+}
+
+.ag-input {
+  @apply w-full px-4 py-2 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all;
+}
+
+.ag-badge {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border;
+}
+
+.ag-badge-published {
+  @apply bg-emerald-50 text-emerald-700 border-emerald-100;
+}
+
+.ag-badge-draft {
+  @apply bg-amber-50 text-amber-700 border-amber-100;
+}
+
+.sidebar-item {
+  @apply flex items-center space-x-3 px-4 py-3 rounded-lg text-black hover:text-primary hover:bg-primary-light/50 transition-all mx-2 mb-1;
+}
+
+.sidebar-item.active {
+  @apply text-primary bg-primary-light font-semibold;
+}
+
+.stat-card-icon {
+  @apply p-3 rounded-xl border border-gray-100 bg-white shadow-sm;
+}
+
+/* Enhanced Interactivity Utilities */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.hover-lift {
+  @apply transition-transform duration-300 hover:-translate-y-1;
+}
+
+.glass-effect {
+  @apply bg-white/80 backdrop-blur-md border border-white/20;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-slate-200 rounded-full hover:bg-slate-300 transition-colors;
+}
+
+.custom-date-input::-webkit-calendar-picker-indicator {
+  @apply opacity-0 absolute inset-0 cursor-pointer;
+}
+
+/* Rich Text Editor Custom Styling */
+.rich-text-editor .ql-toolbar.ql-snow {
+  @apply border-gray-200 rounded-t-xl bg-slate-50/50 py-3;
+}
+
+.rich-text-editor .ql-container.ql-snow {
+  @apply border-gray-200 rounded-b-xl min-h-[350px] text-base font-sans;
+}
+
+.rich-text-editor .ql-editor {
+  @apply min-h-[350px] leading-relaxed text-slate-700;
+}
+
+.rich-text-editor .ql-editor.ql-blank::before {
+  @apply text-slate-400 italic;
+}
+
+.rich-text-editor .ql-snow.ql-toolbar button:hover,
+.rich-text-editor .ql-snow.ql-toolbar button.ql-active,
+.rich-text-editor .ql-snow.ql-toolbar .ql-picker-label:hover,
+.rich-text-editor .ql-snow.ql-toolbar .ql-picker-label.ql-active,
+.rich-text-editor .ql-snow.ql-toolbar .ql-picker-item:hover,
+.rich-text-editor .ql-snow.ql-toolbar .ql-picker-item.ql-active {
+  color: var(--color-primary) !important;
+}
+
+.rich-text-editor .ql-snow.ql-toolbar button:hover .ql-stroke,
+.rich-text-editor .ql-snow.ql-toolbar button.ql-active .ql-stroke,
+.rich-text-editor .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke,
+.rich-text-editor .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke,
+.rich-text-editor .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke,
+.rich-text-editor .ql-snow.ql-toolbar .ql-picker-item.ql-active .ql-stroke {
+  stroke: var(--color-primary) !important;
+}
+
+.rich-text-editor .ql-snow.ql-toolbar button:hover .ql-fill,
+.rich-text-editor .ql-snow.ql-toolbar button.ql-active .ql-fill,
+.rich-text-editor .ql-snow.ql-toolbar .ql-picker-label:hover .ql-fill,
+.rich-text-editor .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-fill,
+.rich-text-editor .ql-snow.ql-toolbar .ql-picker-item:hover .ql-fill,
+.rich-text-editor .ql-snow.ql-toolbar .ql-picker-item.ql-active .ql-fill {
+  fill: var(--color-primary) !important;
+}
+
+.rich-text-editor .ql-container:focus-within {
+  @apply border-primary ring-2 ring-primary/20;
+}
