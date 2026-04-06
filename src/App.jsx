@@ -6,7 +6,7 @@ import Layout from './components/Layout';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import AddBlog from './pages/AddBlog';
-import BlogList from './pages/BlogList';
+import Blog from './pages/Blog';
 import User from './pages/User';
 
 function App() {
@@ -22,20 +22,9 @@ function App() {
             {/* Protected Routes */}
             <Route path="/admin-panel" element={<Layout />}>
               <Route index element={<Dashboard />} />
-              <Route path="add" element={<AddBlog />} />
-              <Route path="edit/:id" element={<AddBlog />} />
-              <Route
-                path="published"
-                element={<BlogList statusFilter="published" title="Published Blogs" />}
-              />
-              <Route
-                path="drafts"
-                element={<BlogList statusFilter="draft" title="Draft Posts" />}
-              />
-              <Route
-                path="all-blogs"
-                element={<BlogList statusFilter="all-blogs" title="All Blogs" />}
-              />
+              <Route path="blogs" element={<Blog />} />
+              <Route path="blogs/add" element={<AddBlog />} />
+              <Route path="blogs/edit/:id" element={<AddBlog />} />
               <Route path="users" element={<User />} />
             </Route>
 

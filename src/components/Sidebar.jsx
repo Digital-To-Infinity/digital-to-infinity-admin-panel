@@ -7,7 +7,8 @@ import {
     LayoutList,
     LogOut,
     X,
-    User
+    User,
+    MessageSquare
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -24,11 +25,10 @@ const Sidebar = ({ isOpen, onClose }) => {
 
     const menuItems = [
         { name: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/admin-panel' },
-        { name: 'Add New Blog', icon: <FilePlus2 size={20} />, path: '/admin-panel/add' },
-        { name: 'All Blogs', icon: <LayoutList size={20} />, path: '/admin-panel/all-blogs' },
-        { name: 'Published', icon: <FileText size={20} />, path: '/admin-panel/published' },
-        { name: 'Drafts', icon: <Files size={20} />, path: '/admin-panel/drafts' },
-        { name: 'Users', icon: <User size={20} />, path: '/admin-panel/users' }
+        { name: 'Add New Blog', icon: <FilePlus2 size={20} />, path: '/admin-panel/blogs/add' },
+        { name: 'Blog Posts', icon: <FileText size={20} />, path: '/admin-panel/blogs' },
+        { name: 'Users', icon: <User size={20} />, path: '/admin-panel/users' },
+        { name: 'Contact Enquiries', icon: <MessageSquare size={20} />, path: '/admin-panel/inquiries' },
     ];
 
     return (
@@ -53,7 +53,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                         <NavLink
                             key={item.name}
                             to={item.path}
-                            end={item.path === '/admin-panel'}
+                            end={item.path === '/admin-panel' || item.path === '/admin-panel/blogs'}
                             onClick={() => {
                                 if (window.innerWidth < 768) onClose();
                             }}

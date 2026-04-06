@@ -100,7 +100,7 @@ const BlogForm = () => {
             slug: title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, ''),
             content,
             status: finalStatus,
-            category: category || 'Market Insights',
+            category: category || 'Technology',
             author: author || 'Admin',
             authorRole: authorRole || 'Editor',
             readTime: readTime || '5 min read',
@@ -117,7 +117,7 @@ const BlogForm = () => {
                 await addBlog(blogData);
                 toast.success(`Article ${finalStatus === 'Published' ? 'published' : 'saved as draft'} successfully!`);
             }
-            navigate('/admin-panel/all-blogs');
+            navigate('/admin-panel/blogs');
         } catch (error) {
             console.error("Save error:", error);
             toast.error("Failed to save article.");
@@ -128,7 +128,7 @@ const BlogForm = () => {
         <form onSubmit={(e) => e.preventDefault()} className="space-y-8 animate-fade-in pb-12">
             <BlogHeader
                 id={id}
-                onCancel={() => navigate('/admin-panel/all-blogs')}
+                onCancel={() => navigate('/admin-panel/blogs')}
                 windowWidth={windowWidth}
             />
 
