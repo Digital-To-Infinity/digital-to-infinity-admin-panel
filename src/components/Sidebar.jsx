@@ -5,6 +5,7 @@ import {
     FileText,
     Users,
     MessageSquare,
+    Zap,
     LogOut,
     X,
     MessageSquareCode
@@ -25,10 +26,10 @@ const Sidebar = ({ isOpen, onClose }) => {
 
     const menuItems = [
         { name: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/admin-panel' },
-        { name: 'Properties', icon: <Building2 size={20} />, path: '/admin-panel/properties' },
         { name: 'Blog Posts', icon: <FileText size={20} />, path: '/admin-panel/blogs' },
-        { name: 'User Management', icon: <Users size={20} />, path: '/admin-panel/users' },
         { name: 'Contact Enquiries', icon: <MessageSquareCode size={20} />, path: '/admin-panel/contact' },
+        { name: 'Onboarding Leads', icon: <Zap size={20} />, path: '/admin-panel/onboarding' },
+        { name: 'User Management', icon: <Users size={20} />, path: '/admin-panel/users' },
     ];
 
     return (

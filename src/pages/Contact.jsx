@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-hot-toast';
+import { useLeads } from '../context/LeadContext';
 import {
   Search,
   Mail,
@@ -18,16 +19,9 @@ import {
   Copy
 } from 'lucide-react';
 
-const enquiriesData = [
-  { id: 1, name: 'Rahul Sharma', email: 'rahul.s@example.com', phone: '+91 98765 43210', property: 'Luxury Villa Belapur', status: 'Pending', date: '2026-03-22', message: 'I am interested in this villa. Is it available for a visit this weekend?' },
-  { id: 2, name: 'Anjali Gupta', email: 'anjali@example.com', phone: '+91 91234 56789', property: 'Office Space Vashi', status: 'Resolved', date: '2026-03-21', message: 'Looking for a 2000 sqft office space in Vashi.' },
-  { id: 3, name: 'Vikram Singh', email: 'vikram@example.com', phone: '+91 98989 89898', property: 'Modern Flat Kamothe', status: 'Pending', date: '2026-03-20', message: 'What is the exact maintenance cost for this flat?' },
-  { id: 4, name: 'Priya Joshi', email: 'priya@example.com', phone: '+91 91111 22222', property: 'Plot Kharghar', status: 'Resolved', date: '2026-03-19', message: 'I am interested in buying a plot in Kharghar.' },
-];
-
 const Contact = () => {
+  const { enquiries, updateEnquiryStatus, deleteEnquiry, loading } = useLeads();
   const [activeTab, setActiveTab] = useState('all');
-  const [enquiries, setEnquiries] = useState(enquiriesData);
   const [searchTerm, setSearchTerm] = useState('');
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [isFocused, setIsFocused] = useState(false);
@@ -96,22 +90,18 @@ const Contact = () => {
   };
 
   const handleResolve = (id) => {
-    setEnquiries(prev => prev.map(inq =>
-      inq.id === id ? { ...inq, status: 'Resolved' } : inq
-    ));
+    updateEnquiryStatus(id, 'Resolved');
     toast.success('Enquiry marked as resolved!');
   };
 
   const handleStatusUpdate = (id, newStatus) => {
-    setEnquiries(prev => prev.map(inq =>
-      inq.id === id ? { ...inq, status: newStatus } : inq
-    ));
+    updateEnquiryStatus(id, newStatus);
     toast.success(`Lead status updated to ${newStatus}`);
     setOpenDropdownId(null);
   };
 
   const handleCopyDetails = (enquiry) => {
-    const details = `Name: ${enquiry.name}\nEmail: ${enquiry.email}\nPhone: ${enquiry.phone}\nProperty: ${enquiry.property}\nMessage: ${enquiry.message}`;
+    const details = `Name: ${enquiry.name}\nEmail: ${enquiry.email}\nPhone: ${enquiry.phone}\nCompany: ${enquiry.companyName}\nCategory: ${enquiry.category}\nSource: ${enquiry.source}\nMessage: ${enquiry.message}`;
     navigator.clipboard.writeText(details);
     toast.success('Lead details copied to clipboard!');
     setOpenDropdownId(null);
@@ -132,7 +122,7 @@ const Contact = () => {
         <div className="flex items-center gap-2 mt-1">
           <button
             onClick={() => {
-              setEnquiries(prev => prev.filter(e => e.id !== id));
+              deleteEnquiry(id);
               toast.dismiss(t.id);
               toast.success('Enquiry deleted successfully!');
             }}
@@ -164,15 +154,19 @@ const Contact = () => {
 
   const filteredEnquiries = enquiries.filter(inq => {
     const matchesTab = activeTab === 'all' || inq.status.toLowerCase() === activeTab.toLowerCase();
+    const searchLower = searchTerm.toLowerCase();
     const matchesSearch =
-      inq.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      inq.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      inq.property.toLowerCase().includes(searchTerm.toLowerCase());
+      inq.name.toLowerCase().includes(searchLower) ||
+      inq.email.toLowerCase().includes(searchLower) ||
+      inq.companyName.toLowerCase().includes(searchLower) ||
+      inq.category.toLowerCase().includes(searchLower);
 
     return matchesTab && matchesSearch;
   });
 
   const selectedEnquiry = enquiries.find(e => e.id === openDropdownId);
+
+  if (loading) return <div className="flex items-center justify-center h-96"><div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin" /></div>;
 
   return (
     <div className="space-y-8 animate-fade-in text-left">
@@ -278,7 +272,12 @@ const Contact = () => {
                       {enquiry.name.charAt(0)}
                     </div>
                     <div className="text-left">
-                      <h4 className="font-bold text-black">{enquiry.name}</h4>
+                      <div className="flex items-center gap-2">
+                        <h4 className="font-bold text-black">{enquiry.name}</h4>
+                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${enquiry.source === 'Popup' ? 'bg-amber-50 text-amber-600 border-amber-200' : 'bg-primary/5 text-primary border-primary/20'}`}>
+                          {enquiry.source}
+                        </span>
+                      </div>
                       <p className="text-sm text-slate-500">Received on {enquiry.date}</p>
                     </div>
                   </div>
@@ -297,7 +296,7 @@ const Contact = () => {
                 </div>
 
                 <div className="flex items-center text-slate-900 font-semibold text-left">
-                  <MapPin size={16} className="mr-2 text-primary" /> Interested in: {enquiry.property}
+                  <MapPin size={16} className="mr-2 text-primary" /> Company: {enquiry.companyName} ({enquiry.category})
                 </div>
 
                 <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 text-base text-slate-700 leading-relaxed text-left">

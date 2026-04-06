@@ -9,32 +9,38 @@ import AddBlog from './pages/AddBlog';
 import Blog from './pages/Blog';
 import User from './pages/User';
 import Contact from './pages/Contact';
+import OnboardingLeads from './pages/OnboardingLeads';
+
+import { LeadProvider } from './context/LeadContext';
 
 function App() {
   return (
     <AuthProvider>
       <BlogProvider>
-        <Toaster position="top-right" reverseOrder={false} />
-        <Router>
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/login" element={<Login />} />
+        <LeadProvider>
+          <Toaster position="top-right" reverseOrder={false} />
+          <Router>
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/login" element={<Login />} />
 
-            {/* Protected Routes */}
-            <Route path="/admin-panel" element={<Layout />}>
-              <Route index element={<Dashboard />} />
-              <Route path="blogs" element={<Blog />} />
-              <Route path="blogs/add" element={<AddBlog />} />
-              <Route path="blogs/edit/:id" element={<AddBlog />} />
-              <Route path="contact" element={<Contact />} />
-              <Route path="users" element={<User />} />
-            </Route>
+              {/* Protected Routes */}
+              <Route path="/admin-panel" element={<Layout />}>
+                <Route index element={<Dashboard />} />
+                <Route path="blogs" element={<Blog />} />
+                <Route path="blogs/add" element={<AddBlog />} />
+                <Route path="blogs/edit/:id" element={<AddBlog />} />
+                <Route path="contact" element={<Contact />} />
+                <Route path="onboarding" element={<OnboardingLeads />} />
+                <Route path="users" element={<User />} />
+              </Route>
 
-            {/* Catch-all and Redirects */}
-            <Route path="/" element={<Navigate to="/admin-panel" replace />} />
-            <Route path="*" element={<Navigate to="/admin-panel" replace />} />
-          </Routes>
-        </Router>
+              {/* Catch-all and Redirects */}
+              <Route path="/" element={<Navigate to="/admin-panel" replace />} />
+              <Route path="*" element={<Navigate to="/admin-panel" replace />} />
+            </Routes>
+          </Router>
+        </LeadProvider>
       </BlogProvider>
     </AuthProvider>
   );
