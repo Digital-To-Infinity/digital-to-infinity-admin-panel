@@ -252,13 +252,13 @@ const Blog = () => {
 
       {/* Tabs & Filters */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div className="flex items-center bg-white p-1.5 rounded-2xl border border-slate-100 w-full md:w-fit overflow-x-auto no-scrollbar shrink-0 shadow-sm">
+        <div className="flex items-center bg-white p-1.5 rounded-full border border-slate-100 w-full md:w-fit overflow-x-auto no-scrollbar shrink-0 shadow-sm">
           {['all', 'published', 'draft', 'archived'].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={`
-                flex-1 md:flex-none px-6 md:px-10 py-2 rounded-xl text-sm font-bold capitalize transition-all cursor-pointer whitespace-nowrap
+                flex-1 md:flex-none px-6 md:px-10 py-2 rounded-full text-sm font-bold capitalize transition-all cursor-pointer whitespace-nowrap
                 ${activeTab === tab
                   ? 'bg-primary text-white shadow-md'
                   : 'text-slate-500 hover:text-primary hover:bg-primary-light'}
@@ -283,7 +283,7 @@ const Blog = () => {
                 onBlur={() => setIsFocused(false)}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search articles..."
-                className="w-full bg-white border border-slate-200 rounded-2xl py-3 pl-11 pr-10 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary focus:outline-none transition-all shadow-sm hover:border-slate-300"
+                className="w-full bg-white border border-slate-200 rounded-full py-3 pl-11 pr-10 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary focus:outline-none transition-all shadow-sm hover:border-slate-300"
               />
               <AnimatePresence>
                 {searchTerm && (

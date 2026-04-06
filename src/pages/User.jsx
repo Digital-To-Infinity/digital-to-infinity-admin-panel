@@ -200,13 +200,12 @@ const User = () => {
     return matchesTab && matchesSearch;
   });
 
-  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
-  const paginatedUsers = filteredUsers.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  const totalItems = filteredUsers.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentItems = filteredUsers.slice(startIndex, startIndex + itemsPerPage);
 
-  const selectedUser = paginatedUsers.find(u => u.id === openDropdownId);
+  const selectedUser = currentItems.find(u => u.id === openDropdownId);
 
   return (
     <div className="space-y-8 animate-fade-in text-left">
@@ -220,13 +219,13 @@ const User = () => {
 
       {/* Tabs & Filters & Search Bar */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div className="flex items-center bg-white p-1.5 rounded-2xl border border-slate-100 w-full md:w-fit overflow-x-auto no-scrollbar shrink-0 shadow-sm">
+        <div className="flex items-center bg-white p-1.5 rounded-full border border-slate-100 w-full md:w-fit overflow-x-auto no-scrollbar shrink-0 shadow-sm">
           {['all', 'admin', 'user'].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={`
-                flex-1 md:flex-none px-6 md:px-10 py-2 rounded-xl text-sm font-bold capitalize transition-all cursor-pointer whitespace-nowrap
+                flex-1 md:flex-none px-6 md:px-10 py-2 rounded-full text-sm font-bold capitalize transition-all cursor-pointer whitespace-nowrap
                 ${activeTab === tab
                   ? 'bg-primary text-white shadow-md'
                   : 'text-slate-500 hover:text-black hover:bg-slate-50'}
@@ -252,7 +251,7 @@ const User = () => {
                 onBlur={() => setIsFocused(false)}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search users..."
-                className="w-full bg-white border border-slate-200 rounded-2xl py-3 pl-11 pr-10 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary focus:outline-none transition-all shadow-sm hover:border-slate-300"
+                className="w-full bg-white border border-slate-200 rounded-full py-3 pl-11 pr-10 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary focus:outline-none transition-all shadow-sm hover:border-slate-300"
               />
               <AnimatePresence>
                 {searchTerm && (
@@ -272,7 +271,7 @@ const User = () => {
       </div>
 
       {/* User Table */}
-      <div className="ag-card">
+      <div className="ag-card overflow-visible">
         <div className="overflow-x-auto no-scrollbar">
           <table className="w-full text-left border-collapse">
             <thead className="bg-slate-50/50 border-b border-slate-100 text-slate-500 uppercase tracking-wider text-xs font-bold whitespace-nowrap">
@@ -285,8 +284,8 @@ const User = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
-              {paginatedUsers.length > 0 ? (
-                paginatedUsers.map((user) => (
+              {currentItems.length > 0 ? (
+                currentItems.map((user) => (
                   <tr key={user.id} className={`hover:bg-slate-50/50 transition-colors group ${openDropdownId === user.id ? 'relative z-[60]' : ''}`}>
                     <td className="px-6 py-4">
                       <div className="flex items-center space-x-3">
@@ -455,8 +454,8 @@ const User = () => {
         )}
 
         {/* Pagination */}
-        <div className="px-6 py-6 bg-slate-50/50 border-t border-slate-100 flex flex-col nav:flex-row items-center justify-between gap-6">
-          <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-8 w-full nav:w-auto">
+        <div className="px-6 py-6 bg-slate-50/50 border-t border-slate-100 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-8 w-full md:w-auto">
             <p className="text-sm text-black font-medium whitespace-nowrap">
               Showing <span className="text-primary font-bold">{(currentPage - 1) * itemsPerPage + 1}</span> to <span className="text-primary font-bold">{Math.min(currentPage * itemsPerPage, filteredUsers.length)}</span> of <span className="text-primary font-bold">{filteredUsers.length}</span> users
             </p>
@@ -507,7 +506,7 @@ const User = () => {
             </div>
           </div>
 
-          <div className="flex items-center justify-between w-full nav:w-auto nav:justify-end nav:space-x-2">
+          <div className="flex items-center justify-between w-full md:w-auto md:justify-end md:space-x-2">
             <button
               onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
