@@ -8,6 +8,7 @@ import Dashboard from './pages/Dashboard';
 import AddBlog from './pages/AddBlog';
 import Blog from './pages/Blog';
 import User from './pages/User';
+import Contact from './pages/Contact';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
               <Route path="blogs" element={<Blog />} />
               <Route path="blogs/add" element={<AddBlog />} />
               <Route path="blogs/edit/:id" element={<AddBlog />} />
+              <Route path="contact" element={<Contact />} />
               <Route path="users" element={<User />} />
             </Route>
 
