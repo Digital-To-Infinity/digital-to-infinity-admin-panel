@@ -15,6 +15,8 @@
   --radius-xl: 1rem;
   --radius-lg: 0.75rem;
   --radius-md: 0.5rem;
+
+  --breakpoint-nav: 48rem; /* 768px */
 }
 
 :root {
@@ -59,11 +61,27 @@
 }
 
 .sidebar-item {
-  @apply flex items-center space-x-3 px-4 py-3 rounded-lg text-black hover:text-primary hover:bg-primary-light/50 transition-all mx-2 mb-1;
+  @apply flex items-center space-x-3 px-4 py-3.5 mx-4 mb-1.5 rounded-xl text-slate-600 transition-all duration-300 ease-in-out relative;
+}
+
+.sidebar-item:hover {
+  @apply text-primary bg-primary/5 translate-x-1;
 }
 
 .sidebar-item.active {
-  @apply text-primary bg-primary-light font-semibold;
+  @apply text-white bg-primary font-semibold shadow-md shadow-primary/20;
+}
+
+.sidebar-item svg {
+  @apply transition-all duration-300;
+}
+
+.sidebar-item:hover svg {
+  @apply scale-110;
+}
+
+.sidebar-item.active svg {
+  @apply text-white;
 }
 
 .stat-card-icon {

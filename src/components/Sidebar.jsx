@@ -1,17 +1,16 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
     LayoutDashboard,
-    FilePlus2,
+    Building2,
     FileText,
-    Files,
-    LayoutList,
+    Users,
+    MessageSquare,
     LogOut,
     X,
-    User,
-    MessageSquare
+    MessageSquareCode
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-
+import { toast } from 'react-hot-toast';
 import logo from '../assets/logo.png';
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -20,56 +19,54 @@ const Sidebar = ({ isOpen, onClose }) => {
 
     const handleLogout = () => {
         logout();
+        toast.success('Successfully signed out!');
         navigate('/login');
     };
 
     const menuItems = [
         { name: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/admin-panel' },
-        { name: 'Add New Blog', icon: <FilePlus2 size={20} />, path: '/admin-panel/blogs/add' },
+        { name: 'Properties', icon: <Building2 size={20} />, path: '/admin-panel/properties' },
         { name: 'Blog Posts', icon: <FileText size={20} />, path: '/admin-panel/blogs' },
-        { name: 'Users', icon: <User size={20} />, path: '/admin-panel/users' },
-        { name: 'Contact Enquiries', icon: <MessageSquare size={20} />, path: '/admin-panel/inquiries' },
+        { name: 'Contact Enquiries', icon: <MessageSquareCode size={20} />, path: '/admin-panel/inquiries' },
+        { name: 'User Management', icon: <Users size={20} />, path: '/admin-panel/users' },
     ];
 
     return (
         <aside className={`
       fixed top-0 left-0 h-full bg-white border-r border-slate-100 z-40 transition-all duration-300
-      ${isOpen ? 'w-72 translate-x-0' : 'w-72 -translate-x-full md:translate-x-0'}
+      ${isOpen ? 'w-72 translate-x-0' : 'w-72 -translate-x-full nav:translate-x-0'}
     `}>
+            {/* Close Button */}
+            <button
+                className="absolute top-4 right-4 nav:hidden p-2 text-slate-500 hover:text-red-500 hover:bg-red-50 rounded-full transition-all duration-300"
+                onClick={onClose}
+                aria-label="Close Sidebar"
+            >
+                <X size={20} />
+            </button>
+
             <div className="flex flex-col h-full overflow-hidden">
                 {/* Logo */}
-                <div className="p-8 flex items-center justify-between">
-                    <div className="flex items-center">
-                        <img src={logo} alt="Digital to Infinity" className="h-15 w-auto" />
-                    </div>
-                    <button className="md:hidden p-2 hover:bg-slate-50 rounded-lg transition-colors" onClick={onClose}>
-                        <X size={20} />
-                    </button>
+                <div className="p-8 flex items-center">
+                    <img src={logo} alt="Digital to Infinity" className="h-14 w-auto" />
                 </div>
 
                 {/* Navigation */}
-                <nav className="flex-1 py-4 overflow-y-auto">
+                <nav className="flex-1 py-4 overflow-y-auto no-scrollbar">
                     {menuItems.map((item) => (
                         <NavLink
                             key={item.name}
                             to={item.path}
-                            end={item.path === '/admin-panel' || item.path === '/admin-panel/blogs'}
+                            end={item.path === '/admin-panel'}
                             onClick={() => {
                                 if (window.innerWidth < 768) onClose();
                             }}
-                            className={({ isActive }) => `
-                sidebar-item
-                ${isActive ? 'active' : ''}
-              `}
+                            className={({ isActive }) => `sidebar-item ${isActive ? 'active' : ''}`}
                         >
-                            {({ isActive }) => (
-                                <>
-                                    <span className={`shrink-0 ${isActive ? 'text-primary' : 'text-black'}`}>
-                                        {item.icon}
-                                    </span>
-                                    <span className={`text-sm ${isActive ? 'text-primary' : 'text-black'}`}>{item.name}</span>
-                                </>
-                            )}
+                            <span className="shrink-0">
+                                {item.icon}
+                            </span>
+                            <span className="text-[14px] font-semibold">{item.name}</span>
                         </NavLink>
                     ))}
                 </nav>
@@ -78,10 +75,10 @@ const Sidebar = ({ isOpen, onClose }) => {
                 <div className="p-4 border-t border-slate-50">
                     <button
                         onClick={handleLogout}
-                        className="flex items-center space-x-3 px-4 py-3 w-full text-black hover:text-red-600 hover:bg-red-50 rounded-lg transition-all cursor-pointer"
+                        className="flex items-center space-x-3 px-4 py-3.5 w-full text-slate-600 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all duration-300 cursor-pointer font-semibold"
                     >
                         <LogOut size={20} />
-                        <span className="text-sm font-medium">Sign Out</span>
+                        <span className="text-[14px]">Sign Out</span>
                     </button>
                 </div>
             </div>
