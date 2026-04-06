@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { BlogProvider } from './context/BlogContext';
+import { Toaster } from 'react-hot-toast';
 import Layout from './components/Layout';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
@@ -11,6 +12,7 @@ function App() {
   return (
     <AuthProvider>
       <BlogProvider>
+        <Toaster position="top-right" reverseOrder={false} />
         <Router>
           <Routes>
             {/* Public Routes */}

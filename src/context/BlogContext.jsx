@@ -3,22 +3,44 @@ import { createContext, useContext, useState, useEffect } from 'react';
 const BlogContext = createContext();
 
 const STORAGE_KEY = 'dti_blogs';
+const CATEGORIES_STORAGE_KEY = 'dti_categories';
+
+const DEFAULT_CATEGORIES = [
+    { value: 'Market Insights', label: 'Market Insights' },
+    { value: 'Buying Guide', label: 'Buying Guide' },
+    { value: 'Investment', label: 'Investment' },
+    { value: 'Lifestyle', label: 'Lifestyle' },
+    { value: 'Real Estate News', label: 'Real Estate News' }
+];
 
 export const BlogProvider = ({ children }) => {
     const [blogs, setBlogs] = useState([]);
+    const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Load blogs from localStorage
+        // Load blogs and categories from localStorage
         const savedBlogs = localStorage.getItem(STORAGE_KEY);
         if (savedBlogs) {
             setBlogs(JSON.parse(savedBlogs));
         }
+
+        const savedCategories = localStorage.getItem(CATEGORIES_STORAGE_KEY);
+        if (savedCategories) {
+            setCategories(JSON.parse(savedCategories));
+        } else {
+            setCategories(DEFAULT_CATEGORIES);
+        }
+
         setLoading(false);
     }, []);
 
     const saveToStorage = (updatedBlogs) => {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedBlogs));
+    };
+
+    const saveCategoriesToStorage = (updatedCategories) => {
+        localStorage.setItem(CATEGORIES_STORAGE_KEY, JSON.stringify(updatedCategories));
     };
 
     const addBlog = async (blog) => {
@@ -75,8 +97,37 @@ export const BlogProvider = ({ children }) => {
         }
     };
 
+    const addCategory = (categoryName) => {
+        if (!categoryName.trim()) return;
+        const exists = categories.some(cat => cat.label.toLowerCase() === categoryName.toLowerCase());
+        if (exists) return;
+
+        const newCategory = { value: categoryName, label: categoryName };
+        const updatedCategories = [...categories, newCategory];
+        setCategories(updatedCategories);
+        saveCategoriesToStorage(updatedCategories);
+    };
+
+    const deleteCategory = (categoryValue) => {
+        if (window.confirm(`Are you sure you want to delete the category "${categoryValue}"?`)) {
+            const updatedCategories = categories.filter(cat => cat.value !== categoryValue);
+            setCategories(updatedCategories);
+            saveCategoriesToStorage(updatedCategories);
+        }
+    };
+
     return (
-        <BlogContext.Provider value={{ blogs, addBlog, deleteBlog, updateBlog, updateBlogStatus, loading }}>
+        <BlogContext.Provider value={{ 
+            blogs, 
+            categories,
+            addBlog, 
+            deleteBlog, 
+            updateBlog, 
+            updateBlogStatus, 
+            addCategory,
+            deleteCategory,
+            loading 
+        }}>
             {children}
         </BlogContext.Provider>
     );
