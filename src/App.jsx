@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import AddBlog from './pages/AddBlog';
 import BlogList from './pages/BlogList';
+import User from './pages/User';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
                 path="all-blogs"
                 element={<BlogList statusFilter="all-blogs" title="All Blogs" />}
               />
+              <Route path="users" element={<User />} />
             </Route>
 
             {/* Catch-all and Redirects */}

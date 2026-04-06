@@ -6,7 +6,8 @@ import {
     Files,
     LayoutList,
     LogOut,
-    X
+    X,
+    User
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -27,6 +28,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         { name: 'All Blogs', icon: <LayoutList size={20} />, path: '/admin-panel/all-blogs' },
         { name: 'Published', icon: <FileText size={20} />, path: '/admin-panel/published' },
         { name: 'Drafts', icon: <Files size={20} />, path: '/admin-panel/drafts' },
+        { name: 'Users', icon: <User size={20} />, path: '/admin-panel/users' }
     ];
 
     return (
@@ -51,6 +53,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                         <NavLink
                             key={item.name}
                             to={item.path}
+                            end={item.path === '/admin-panel'}
                             onClick={() => {
                                 if (window.innerWidth < 768) onClose();
                             }}
